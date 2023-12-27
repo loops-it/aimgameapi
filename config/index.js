@@ -10,9 +10,9 @@ module.exports = {
     password: process.env.DB_PASSWORD ?? "123admin",
   },
   aws: {
-    accessKey: process.env.AWS_ACCESS_KEY ?? "AKIA26SJZPW5L5CGFNAJ",
+    accessKey: process.env.AWS_ACCESS_KEY_AimGame ?? "AKIA26SJZPW5L5CGFNAJ",
     secretKey:
-      process.env.AWS_SECRET_KEY ?? "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",
+      process.env.AWS_SECRET_KEY_AimGame ?? "Zmcr/uJfDq85a/8t42Qq5VE8dfmI9pP7ZI5Z6lQz",
     bucketName: process.env.AWS_BUCKET_NAME ?? "aimgame-dev",
     region: process.env.AWS_DEFAULT_REGION ?? "ap-southeast-1",
   },
