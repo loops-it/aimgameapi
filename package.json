@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Aimgame Server",
   "main": "index.js",
-  "engines": { "node": "20.x" },
+  "engines": { "node": "18.x" },
   "scripts": {
     "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
