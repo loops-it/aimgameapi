@@ -1,17 +1,17 @@
-import { Router } from "express";
-import { createClient, getAllClients, getClientById, updateClient, deleteClient } from "../controllers/ClientController";
-import { uploadProfilePhoto } from "../middleware/image-upload.middleware";
-const router = Router();
+const express = require("express");
+const clientController = require("../controllers/ClientController");
+const { uploadProfilePhoto } = require("../middleware/image-upload.middleware");
+const router = express.Router();
 
 router
   .route("/")
-  .post(uploadProfilePhoto, createClient)
-  .get(getAllClients);
+  .post(uploadProfilePhoto, clientController.createClient)
+  .get(clientController.getAllClients);
 
 router
   .route("/:id")
-  .get(getClientById)
-  .put(updateClient)
-  .delete(deleteClient);
+  .get(clientController.getClientById)
+  .put(clientController.updateClient)
+  .delete(clientController.deleteClient);
 
-export default router;
+module.exports = router;

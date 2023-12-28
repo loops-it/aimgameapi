@@ -1,75 +1,75 @@
-import { validationException } from "../exception";
-import { getAllFunnelStatuses, getFunnelStatusById, createFunnelStatus, updateFunnelStatus, deleteFunnelStatus } from "../services/FunnelStatusService";
-import { string, number } from "joi";
+const { validationException } = require("../exception");
+const funnelStatusService = require("../services/FunnelStatusService");
+const Joi = require("joi");
 
-export async function getAllFunnelStatuses(req, res, next) {
+exports.getAllFunnelStatuses = async (req, res, next) => {
   try {
-    const data = await getAllFunnelStatuses();
+    const data = await funnelStatusService.getAllFunnelStatuses();
     res.status(200).json({ success: true, status: 200, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function getFunnelStatusById(req, res, next) {
+exports.getFunnelStatusById = async (req, res, next) => {
   const { id } = req.params;
   try {
     if (!id) {
       throw new validationException("id is required");
     }
-    const data = await getFunnelStatusById(id);
+    const data = await funnelStatusService.getFunnelStatusById(id);
     res.status(200).json({ success: true, status: 200, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function createFunnelStatus(req, res, next) {
+exports.createFunnelStatus = async (req, res, next) => {
   const funnelStatusValidationRules = {
-    status: string().required(),
-    stage: string().required(),
-    rate: string().required(),
-    level: number().required(),
-    order: number().required(),
+    status: Joi.string().required(),
+    stage: Joi.string().required(),
+    rate: Joi.string().required(),
+    level: Joi.number().required(),
+    order: Joi.number().required(),
   };
 
   const { body } = req;
   try {
     await validate(funnelStatusValidationRules, req);
-    const data = await createFunnelStatus(body);
+    const data = await funnelStatusService.createFunnelStatus(body);
     res.status(201).json({ success: true, status: 201, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function updateFunnelStatus(req, res, next) {
+exports.updateFunnelStatus = async (req, res, next) => {
   const { id } = req.params;
   const { body } = req;
 
   const funnelStatusValidationRules = {
-    status: string(),
-    stage: string(),
-    rate: string(),
-    level: number(),
-    order: number(),
+    status: Joi.string(),
+    stage: Joi.string(),
+    rate: Joi.string(),
+    level: Joi.number(),
+    order: Joi.number(),
   };
 
   try {
     await validate(funnelStatusValidationRules, req);
-    const data = await updateFunnelStatus(id, body);
+    const data = await funnelStatusService.updateFunnelStatus(id, body);
     res.status(201).json({ success: true, status: 201, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function deleteFunnelStatus(req, res, next) {
+exports.deleteFunnelStatus = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const data = await deleteFunnelStatus(id);
+    const data = await funnelStatusService.deleteFunnelStatus(id);
     res.status(201).json({ success: true, status: 201, data });
   } catch (error) {
     next(error);
   }
-}
+};

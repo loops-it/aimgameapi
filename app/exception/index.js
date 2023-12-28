@@ -1,6 +1,6 @@
-import validationException from "./validationException.mjs";
-import notFoundException from "./notFoundException";
-export default {
+const validationException = require("./validationException");
+const notFoundException = require("./notFoundException");
+module.exports = {
   validationException,
   notFoundException,
 };

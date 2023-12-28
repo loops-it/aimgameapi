@@ -1,13 +1,13 @@
-import { connect } from "mongoose";
-import { database } from "../config";
+const mongoose = require("mongoose");
+const { database } = require("../config");
 
-export async function connect() {
+module.exports.connect = async () => {
   try {
-    const data = await connect(
+    const data = await mongoose.connect(
       `mongodb+srv://${database.user}:${database.password}@${database.host}/${database.database}?retryWrites=true&w=majority`
     );
     console.log(`-----Connected to ${database.database} successfully-----`);
   } catch (error) {
     console.log("db connection error ", { error });
   }
-}
+};

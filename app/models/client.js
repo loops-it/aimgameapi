@@ -1,5 +1,5 @@
-import { Schema as _Schema, model } from "mongoose";
-const Schema = _Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const clientSchema = Schema(
   {
@@ -35,4 +35,4 @@ const clientSchema = Schema(
   { timestamps: true }
 );
 
-export default model("Client", clientSchema);
+module.exports = mongoose.model("Client", clientSchema);

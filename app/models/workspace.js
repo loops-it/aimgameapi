@@ -1,5 +1,5 @@
-import { Schema as _Schema, model } from "mongoose";
-const Schema = _Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const workspaceSchema = Schema(
   {
@@ -34,4 +34,4 @@ workspaceSchema.virtual("client-workspace", {
   foreignField: "workspaceId",
 });
 
-export default model("Workspace", workspaceSchema);
+module.exports = mongoose.model("Workspace", workspaceSchema);

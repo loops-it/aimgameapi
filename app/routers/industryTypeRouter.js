@@ -1,16 +1,16 @@
-import { Router } from "express";
-import { createIndustryType, getAllIndustryTypes, getIndustryTypeById, updateIndustryType, deleteIndustryType } from "../controllers/IndustryTypeController";
-const router = Router();
+const express = require("express");
+const industryTypeController = require("../controllers/IndustryTypeController");
+const router = express.Router();
 
 router
   .route("/")
-  .post(createIndustryType)
-  .get(getAllIndustryTypes);
+  .post(industryTypeController.createIndustryType)
+  .get(industryTypeController.getAllIndustryTypes);
 
 router
   .route("/:id")
-  .get(getIndustryTypeById)
-  .put(updateIndustryType)
-  .delete(deleteIndustryType);
+  .get(industryTypeController.getIndustryTypeById)
+  .put(industryTypeController.updateIndustryType)
+  .delete(industryTypeController.deleteIndustryType);
 
-export default router;
+module.exports = router;

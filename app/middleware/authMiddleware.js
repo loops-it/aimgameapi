@@ -1,7 +1,7 @@
-import { verify } from "jsonwebtoken";
-import { key } from "../config";
+var jwt = require("jsonwebtoken");
+const { key } = require("../config");
 
-export default (req, res, next) => {
+module.exports = (req, res, next) => {
   const authHeader = req.get("authorization");
 
   if (!authHeader || authHeader.split(" ").length != 2) {
@@ -13,7 +13,7 @@ export default (req, res, next) => {
   try {
     const token = authHeader.split(" ")[1];
     console.log("Token:", token);
-    var decoded = verify(token, key);
+    var decoded = jwt.verify(token, key);
     req.user = {
       ...decoded.data,
       role: ["testRole"],

@@ -1,32 +1,32 @@
-import e from "express";
-import { notFoundException } from "../exception";
-import FunnelStatusModel, { find, findById, findByIdAndUpdate, findByIdAndDelete } from "../models/funnelStatus";
+const e = require("express");
+const { notFoundException } = require("../exception");
+const FunnelStatusModel = require("../models/funnelStatus");
 
-export async function getAllFunnelStatuses() {
-  const funnelStatuses = await find({});
+exports.getAllFunnelStatuses = async () => {
+  const funnelStatuses = await FunnelStatusModel.find({});
   return funnelStatuses;
-}
+};
 
-export async function getFunnelStatusById(id) {
-  const funnelStatus = await findById(id);
+exports.getFunnelStatusById = async (id) => {
+  const funnelStatus = await FunnelStatusModel.findById(id);
   return funnelStatus;
-}
+};
 
-export async function createFunnelStatus(funnelStatus) {
+exports.createFunnelStatus = async (funnelStatus) => {
   const newFunnelStatus = await new FunnelStatusModel(funnelStatus).save();
   return newFunnelStatus;
-}
+};
 
-export async function updateFunnelStatus(id, funnelStatus) {
-  const updatedFunnelStatus = await findByIdAndUpdate(
+exports.updateFunnelStatus = async (id, funnelStatus) => {
+  const updatedFunnelStatus = await FunnelStatusModel.findByIdAndUpdate(
     id,
     funnelStatus,
     { new: true }
   );
   return updatedFunnelStatus;
-}
+};
 
-export async function deleteFunnelStatus(id) {
-  const deletedFunnelStatus = await findByIdAndDelete(id);
+exports.deleteFunnelStatus = async (id) => {
+  const deletedFunnelStatus = await FunnelStatusModel.findByIdAndDelete(id);
   return deletedFunnelStatus;
-}
+};

@@ -1,103 +1,103 @@
-import { validationException } from "../exception";
-import { getAllWorkspaces, getWorkspaceById, createWorkspace, updateWorkspace, deleteWorkspace, getWorkspaceByIndustryType, getWorkspaceBySubscription } from "../services/WorkspaceService";
-import { string } from "joi";
+const { validationException } = require("../exception");
+const workspaceService = require("../services/WorkspaceService");
+const Joi = require("joi");
 
-export async function getAllWorkspaces(req, res, next) {
+exports.getAllWorkspaces = async (req, res, next) => {
   try {
-    const data = await getAllWorkspaces();
+    const data = await workspaceService.getAllWorkspaces();
     res.status(200).json({ success: true, status: 200, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function getWorkspaceById(req, res, next) {
+exports.getWorkspaceById = async (req, res, next) => {
   const { id } = req.params;
   try {
     if (!id) {
       throw new validationException("id is required");
     }
-    const data = await getWorkspaceById(id);
+    const data = await workspaceService.getWorkspaceById(id);
     res.status(200).json({ success: true, status: 200, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function createWorkspace(req, res, next) {
+exports.createWorkspace = async (req, res, next) => {
   const workspaceValidationRules = {
-    name: string().required(),
-    address: string().required(),
-    subscription: string().required(),
-    industryTypeId: string().required(),
-    contactEmail: string().email().required(),
+    name: Joi.string().required(),
+    address: Joi.string().required(),
+    subscription: Joi.string().required(),
+    industryTypeId: Joi.string().required(),
+    contactEmail: Joi.string().email().required(),
   };
 
   const { body } = req;
   try {
     await validate(workspaceValidationRules, req);
-    const data = await createWorkspace(body);
+    const data = await workspaceService.createWorkspace(body);
     res.status(201).json({ success: true, status: 201, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function updateWorkspace(req, res, next) {
+exports.updateWorkspace = async (req, res, next) => {
   const { id } = req.params;
   const { body } = req;
   const workspaceValidationRules = {
-    name: string(),
-    address: string(),
-    subscription: string(),
-    industryTypeId: string(),
-    contactEmail: string().email(),
+    name: Joi.string(),
+    address: Joi.string(),
+    subscription: Joi.string(),
+    industryTypeId: Joi.string(),
+    contactEmail: Joi.string().email(),
   };
   try {
     await validate(workspaceValidationRules, req);
-    const data = await updateWorkspace(id, body);
+    const data = await workspaceService.updateWorkspace(id, body);
     res.status(201).json({ success: true, status: 201, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function deleteWorkspace(req, res, next) {
+exports.deleteWorkspace = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const data = await deleteWorkspace(id);
+    const data = await workspaceService.deleteWorkspace(id);
     res.status(201).json({ success: true, status: 201, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function getWorkspaceByIndustryType(req, res, next) {
+exports.getWorkspaceByIndustryType = async (req, res, next) => {
   const { industryTypeId } = req.params;
   try {
     if (!industryTypeId) {
       throw new validationException("industryTypeId is required");
     }
-    const data = await getWorkspaceByIndustryType(
+    const data = await workspaceService.getWorkspaceByIndustryType(
       industryTypeId
     );
     res.status(200).json({ success: true, status: 200, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function getWorkspaceBySubscription(req, res, next) {
+exports.getWorkspaceBySubscription = async (req, res, next) => {
   const { subscription } = req.params;
   try {
     if (!subscription) {
       throw new validationException("subscription is required");
     }
-    const data = await getWorkspaceBySubscription(
+    const data = await workspaceService.getWorkspaceBySubscription(
       subscription
     );
     res.status(200).json({ success: true, status: 200, data });
   } catch (error) {
     next(error);
   }
-}
+};

@@ -1,31 +1,31 @@
-import e from "express";
-import IndustryTypeModel, { find, findById, findByIdAndUpdate, findByIdAndDelete } from "../models/industryType";
+const e = require("express");
+const IndustryTypeModel = require("../models/industryType");
 
-export async function getAllIndustryTypes() {
-  const industryTypes = await find({});
+exports.getAllIndustryTypes = async () => {
+  const industryTypes = await IndustryTypeModel.find({});
   return industryTypes;
-}
+};
 
-export async function getIndustryTypeById(id) {
-  const industryType = await findById(id);
+exports.getIndustryTypeById = async (id) => {
+  const industryType = await IndustryTypeModel.findById(id);
   return industryType;
-}
+};
 
-export async function createIndustryType(industryType) {
+exports.createIndustryType = async (industryType) => {
   const newIndustryType = await new IndustryTypeModel(industryType).save();
   return newIndustryType;
-}
+};
 
-export async function updateIndustryType(id, industryType) {
-  const updatedIndustryType = await findByIdAndUpdate(
+exports.updateIndustryType = async (id, industryType) => {
+  const updatedIndustryType = await IndustryTypeModel.findByIdAndUpdate(
     id,
     industryType,
     { new: true }
   );
   return updatedIndustryType;
-}
+};
 
-export async function deleteIndustryType(id) {
-  const deletedIndustryType = await findByIdAndDelete(id);
+exports.deleteIndustryType = async (id) => {
+  const deletedIndustryType = await IndustryTypeModel.findByIdAndDelete(id);
   return deletedIndustryType;
-}
+};

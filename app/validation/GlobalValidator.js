@@ -1,8 +1,8 @@
-import { object } from "joi";
-import { validationException } from "../exception";
+const Joi = require("joi");
+const { validationException } = require("../exception");
 
 const validate = async function (rules, req) {
-  const schema = object(rules);
+  const schema = Joi.object(rules);
 
   const data = {};
   const requestBody = req.body ?? [];
@@ -36,5 +36,4 @@ const init = function () {
   global.validate = validate;
 };
 
-const _init = init;
-export { _init as init };
+module.exports.init = init;

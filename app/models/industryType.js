@@ -1,5 +1,5 @@
-import { Schema as _Schema, model } from "mongoose";
-const Schema = _Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const industryTypeSchema = Schema(
   {
@@ -27,4 +27,4 @@ industryTypeSchema.virtual("client-industryType", {
   foreignField: "industryTypeId",
 });
 
-export default model("IndustryType", industryTypeSchema);
+module.exports = mongoose.model("IndustryType", industryTypeSchema);

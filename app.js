@@ -1,38 +1,40 @@
-import express, { json } from "express";
-import morgan from "morgan";
+const express = require("express");
+const morgan = require("morgan");
 const app = express();
-import { urlencoded, json as _json } from "body-parser";
-import cors from "cors";
-import router from "./app/routers";
-import { readFileSync } from "fs";
-import { parse } from "yaml";
-import { serve, setup } from "swagger-ui-express";
-const file = readFileSync("./doc/swagger.yaml", "utf8");
-const swaggerDocument = parse(file);
+var bodyParser = require("body-parser");
+var cors = require("cors");
+const router = require("./app/routers");
+const fs = require("fs");
+const YAML = require("yaml");
+const swaggerUi = require("swagger-ui-express");
+const file = fs.readFileSync("./doc/swagger.yaml", "utf8");
+const swaggerDocument = YAML.parse(file);
 
-import { init } from "./app/validation/GlobalValidator";
+const GlobalValidator = require("./app/validation/GlobalValidator");
 
-import { connect } from "./databases";
-import s3Service from "./app/services/s3Service";
-import { uploadProfilePhoto } from "./app/middleware/image-upload.middleware";
-connect();
+const db = require("./databases");
+const s3Service = require("./app/services/s3Service");
+const {
+  uploadProfilePhoto,
+} = require("./app/middleware/image-upload.middleware");
+db.connect();
 
-app.use(urlencoded({ extended: true }));
-app.use(_json({ limit: "100mb" }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "100mb" }));
 
 app.use(cors());
 app.use(morgan("dev"));
-app.use(json());
+app.use(express.json());
 
 //set global validator
-init();
-import errorHandler from "./app/middleware/handleException";
+GlobalValidator.init();
+const errorHandler = require("./app/middleware/handleException");
 //Controllers
-import { testUpload } from "./app/controllers/TestController";
-import WorkspaceController from "./app/controllers/WorkspaceController";
-import IndustryTypeController from "./app/controllers/IndustryTypeController";
+const TestController = require("./app/controllers/TestController");
+const WorkspaceController = require("./app/controllers/WorkspaceController");
+const IndustryTypeController = require("./app/controllers/IndustryTypeController");
 
-app.use("/docs/api", serve, setup(swaggerDocument));
+app.use("/docs/api", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get("/", (req, res) => {
   const { version, name, description } = require("./package.json");
@@ -45,8 +47,8 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/uploadTest", testUpload);
+app.post("/uploadTest", TestController.testUpload);
 
 app.use("/api-v1", router);
 app.use(errorHandler);
-export default app;
+module.exports = app;

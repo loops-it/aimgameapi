@@ -1,79 +1,79 @@
-import { validationException } from "../exception";
-import { getAllClients, getClientById, createClient, updateClient, deleteClient } from "../services/ClientService";
-import { string } from "joi";
+const { validationException } = require("../exception");
+const clientService = require("../services/ClientService");
+const Joi = require("joi");
 
-export async function getAllClients(req, res, next) {
+exports.getAllClients = async (req, res, next) => {
   try {
-    const data = await getAllClients();
+    const data = await clientService.getAllClients();
     res.status(200).json({ success: true, status: 200, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function getClientById(req, res, next) {
+exports.getClientById = async (req, res, next) => {
   const { id } = req.params;
   try {
     if (!id) {
       throw new validationException("id is required");
     }
-    const data = await getClientById(id);
+    const data = await clientService.getClientById(id);
     res.status(200).json({ success: true, status: 200, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function createClient(req, res, next) {
+exports.createClient = async (req, res, next) => {
   const clientValidationRules = {
-    name: string().required(),
-    address: string().required(),
-    photo: string().allow("", null),
-    industryTypeId: string().required(),
-    email: string().email().required(),
-    workspaceId: string().required(),
-    phone: string().allow("", null),
+    name: Joi.string().required(),
+    address: Joi.string().required(),
+    photo: Joi.string().allow("", null),
+    industryTypeId: Joi.string().required(),
+    email: Joi.string().email().required(),
+    workspaceId: Joi.string().required(),
+    phone: Joi.string().allow("", null),
   };
 
   const { body } = req;
   try {
     await validate(clientValidationRules, req);
-    const data = await createClient(body);
+    const data = await clientService.createClient(body);
     res.status(201).json({ success: true, status: 201, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function updateClient(req, res, next) {
+exports.updateClient = async (req, res, next) => {
   const { id } = req.params;
   const { body } = req;
 
   const clientValidationRules = {
-    name: string().min(1).max(255).optional().allow(null), // Example: Ensure the name is between 1 and 255 characters
-    address: string().optional().allow(null),
-    photo: string().uri().optional().allow(null), // Assuming 'photo' is a URL
-    industryTypeId: string().optional().allow(null),
-    email: string().email().optional().allow(null),
-    workspaceId: string().optional().allow(null),
-    phone: string().optional().allow(null),
+    name: Joi.string().min(1).max(255).optional().allow(null), // Example: Ensure the name is between 1 and 255 characters
+    address: Joi.string().optional().allow(null),
+    photo: Joi.string().uri().optional().allow(null), // Assuming 'photo' is a URL
+    industryTypeId: Joi.string().optional().allow(null),
+    email: Joi.string().email().optional().allow(null),
+    workspaceId: Joi.string().optional().allow(null),
+    phone: Joi.string().optional().allow(null),
   };
 
   try {
     await validate(clientValidationRules, req);
-    const data = await updateClient(id, body);
+    const data = await clientService.updateClient(id, body);
     res.status(201).json({ success: true, status: 201, data });
   } catch (error) {
     next(error);
   }
-}
+};
 
-export async function deleteClient(req, res, next) {
+exports.deleteClient = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const data = await deleteClient(id);
+    const data = await clientService.deleteClient(id);
     res.status(201).json({ success: true, status: 201, data });
   } catch (error) {
     next(error);
   }
-}
+};
