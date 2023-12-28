@@ -1,17 +1,17 @@
-const AWS = require("aws-sdk");
-const { aws } = require("../../config");
+import { config, S3 } from "aws-sdk";
+import { aws } from "../../config";
 
-exports.upload = (base64, folder) => {
+export function upload(base64, folder) {
   let base64Image = base64?.split(";base64,").pop();
   var bitmap = new Buffer.from(base64Image, "base64");
 
-  AWS.config.update({
+  config.update({
     accessKeyId: aws.accessKey,
     secretAccessKey: aws.secretKey,
     region: aws.region,
   });
 
-  var s3 = new AWS.S3();
+  var s3 = new S3();
 
   const params = {
     Bucket: aws.bucketName,
@@ -38,16 +38,16 @@ exports.upload = (base64, folder) => {
       reject(error);
     }
   });
-};
+}
 
-exports.copyImage = (image) => {
-  AWS.config.update({
+export function copyImage(image) {
+  config.update({
     accessKeyId: aws.accessKey,
     secretAccessKey: aws.secretKey,
     region: aws.region,
   });
 
-  var s3 = new AWS.S3();
+  var s3 = new S3();
 
   const bucketName = aws.bucketName;
   const sourceFolder = "temp";
@@ -77,4 +77,4 @@ exports.copyImage = (image) => {
       reject(error);
     }
   });
-};
+}

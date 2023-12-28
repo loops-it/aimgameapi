@@ -1,13 +1,13 @@
-const express = require("express");
-const router = express.Router();
-const workspaceRouter = require("./workspaceRouter");
-const industryTypeRouter = require("./industryTypeRouter");
-const clientRouter = require("./clientRouter");
-const funnelStatusRouter = require("./funnelStatusRouter");
+import { Router } from "express";
+const router = Router();
+import workspaceRouter from "./workspaceRouter";
+import industryTypeRouter from "./industryTypeRouter";
+import clientRouter from "./clientRouter";
+import funnelStatusRouter from "./funnelStatusRouter";
 
 router.use("/workspaces", workspaceRouter);
 router.use("/industryTypes", industryTypeRouter);
 router.use("/clients", clientRouter);
 router.use("/funnelStatuses", funnelStatusRouter);
 
-module.exports = router;
+export default router;

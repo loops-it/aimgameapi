@@ -1,27 +1,27 @@
-const e = require("express");
-const { notFoundException } = require("../exception");
-const ClientModel = require("../models/client");
-const WorkspaceModel = require("../models/workspace");
-const IndustryTypeModel = require("../models/industryType");
-const s3service = require("../services/s3Service");
-exports.getAllClients = async () => {
-  const clients = await ClientModel.find({});
+import e from "express";
+import { notFoundException } from "../exception";
+import ClientModel, { find, findById, findOne, findByIdAndUpdate, findByIdAndDelete } from "../models/client";
+import { findOne as _findOne } from "../models/workspace";
+import { findOne as __findOne } from "../models/industryType";
+import { upload } from "../services/s3Service";
+export async function getAllClients() {
+  const clients = await find({});
   return clients;
-};
+}
 
-exports.getClientById = async (id) => {
-  const client = await ClientModel.findById(id);
+export async function getClientById(id) {
+  const client = await findById(id);
   return client;
-};
+}
 
-exports.createClient = async (client) => {
-  const clientEmailExists = await ClientModel.findOne({
+export async function createClient(client) {
+  const clientEmailExists = await findOne({
     email: client.email,
   });
-  const workspaceIdExists = await WorkspaceModel.findOne({
+  const workspaceIdExists = await _findOne({
     _id: client.workspaceId,
   });
-  const industryTypeIdExists = await IndustryTypeModel.findOne({
+  const industryTypeIdExists = await __findOne({
     _id: client.industryTypeId,
   });
   if (clientEmailExists) {
@@ -40,17 +40,17 @@ exports.createClient = async (client) => {
       client.photo !== ""
     ) {
       const image = client.photo;
-      const imageData = await s3service.upload(image, "clients");
+      const imageData = await upload(image, "clients");
       client.photo = imageData.Location;
     }
     const newClient = await new ClientModel(client).save();
     return newClient;
   }
-};
+}
 
-exports.updateClient = async (id, client) => {
+export async function updateClient(id, client) {
   if (client.industryTypeId) {
-    const workspaceIdExists = await WorkspaceModel.findOne({
+    const workspaceIdExists = await _findOne({
       _id: client.workspaceId,
     });
     if (!industryTypeIdExists) {
@@ -59,7 +59,7 @@ exports.updateClient = async (id, client) => {
     }
   }
   if (client.workspaceId) {
-    const industryTypeIdExists = await IndustryTypeModel.findOne({
+    const industryTypeIdExists = await __findOne({
       _id: client.industryTypeId,
     });
     if (!workspaceIdExists) {
@@ -73,16 +73,16 @@ exports.updateClient = async (id, client) => {
     client.photo !== ""
   ) {
     const image = client.photo;
-    const imageData = await s3service.upload(image, "clients");
+    const imageData = await upload(image, "clients");
     client.photo = imageData.Location;
   }
-  const updatedClient = await ClientModel.findByIdAndUpdate(id, client, {
+  const updatedClient = await findByIdAndUpdate(id, client, {
     new: true,
   });
   return updatedClient;
-};
+}
 
-exports.deleteClient = async (id) => {
-  const deletedClient = await ClientModel.findByIdAndDelete(id);
+export async function deleteClient(id) {
+  const deletedClient = await findByIdAndDelete(id);
   return deletedClient;
-};
+}

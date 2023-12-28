@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import { Schema as _Schema, model } from 'mongoose';
+const Schema = _Schema;
 
 const testSchema = Schema({
     image: {
@@ -10,4 +10,4 @@ const testSchema = Schema({
     { timestamps: true }
 )
 
-module.exports = mongoose.model('test', testSchema);
+export default model('test', testSchema);

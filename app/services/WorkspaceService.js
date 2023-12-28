@@ -1,20 +1,20 @@
-const { notFoundException } = require("../exception");
-const WorkspaceModel = require("../models/workspace");
-const IndustryTypeModel = require("../models/industryType");
-exports.getAllWorkspaces = async () => {
-  const workspaces = await WorkspaceModel.find({}).populate("industryTypeId");
+import { notFoundException } from "../exception";
+import WorkspaceModel, { find, findById, findByIdAndUpdate, findByIdAndDelete } from "../models/workspace";
+import { findOne } from "../models/industryType";
+export async function getAllWorkspaces() {
+  const workspaces = await find({}).populate("industryTypeId");
   return workspaces;
-};
+}
 
-exports.getWorkspaceById = async (id) => {
-  const workspace = await WorkspaceModel.findById(id).populate(
+export async function getWorkspaceById(id) {
+  const workspace = await findById(id).populate(
     "industryTypeId"
   );
   return workspace;
-};
+}
 
-exports.createWorkspace = async (workspace) => {
-  const industryTypeExists = await IndustryTypeModel.findOne({
+export async function createWorkspace(workspace) {
+  const industryTypeExists = await findOne({
     _id: workspace.industryTypeId,
   });
   if (industryTypeExists) {
@@ -24,30 +24,30 @@ exports.createWorkspace = async (workspace) => {
     console.log("Industry Type not found");
     throw new notFoundException("Industry Type not found");
   }
-};
+}
 
-exports.updateWorkspace = async (id, workspace) => {
-  const updatedWorkspace = await WorkspaceModel.findByIdAndUpdate(
+export async function updateWorkspace(id, workspace) {
+  const updatedWorkspace = await findByIdAndUpdate(
     id,
     workspace,
     { new: true }
   );
   return updatedWorkspace;
-};
+}
 
-exports.deleteWorkspace = async (id) => {
-  const deletedWorkspace = await WorkspaceModel.findByIdAndDelete(id);
+export async function deleteWorkspace(id) {
+  const deletedWorkspace = await findByIdAndDelete(id);
   return deletedWorkspace;
-};
+}
 
-exports.getWorkspaceByIndustryType = async (industryTypeId) => {
-  const workspace = await WorkspaceModel.find({
+export async function getWorkspaceByIndustryType(industryTypeId) {
+  const workspace = await find({
     industryTypeId: industryTypeId,
   });
   return workspace;
-};
+}
 
-exports.getWorkspaceBySubscription = async (subscription) => {
-  const workspace = await WorkspaceModel.find({ subscription: subscription });
+export async function getWorkspaceBySubscription(subscription) {
+  const workspace = await find({ subscription: subscription });
   return workspace;
-};
+}

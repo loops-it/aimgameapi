@@ -1,16 +1,16 @@
-const express = require("express");
-const funnelStatusController = require("../controllers/FunnelStatusController");
-const router = express.Router();
+import { Router } from "express";
+import { createFunnelStatus, getAllFunnelStatuses, getFunnelStatusById, updateFunnelStatus, deleteFunnelStatus } from "../controllers/FunnelStatusController";
+const router = Router();
 
 router
   .route("/")
-  .post(funnelStatusController.createFunnelStatus)
-  .get(funnelStatusController.getAllFunnelStatuses);
+  .post(createFunnelStatus)
+  .get(getAllFunnelStatuses);
 
 router
   .route("/:id")
-  .get(funnelStatusController.getFunnelStatusById)
-  .put(funnelStatusController.updateFunnelStatus)
-  .delete(funnelStatusController.deleteFunnelStatus);
+  .get(getFunnelStatusById)
+  .put(updateFunnelStatus)
+  .delete(deleteFunnelStatus);
 
-module.exports = router;
+export default router;

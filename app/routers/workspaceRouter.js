@@ -1,24 +1,24 @@
-const express = require("express");
-const workspaceController = require("../controllers/WorkspaceController");
-const router = express.Router();
+import { Router } from "express";
+import { createWorkspace, getAllWorkspaces, getWorkspaceById, updateWorkspace, deleteWorkspace, getWorkspaceByIndustryType, getWorkspaceBySubscription } from "../controllers/WorkspaceController";
+const router = Router();
 
 router
   .route("/")
-  .post(workspaceController.createWorkspace)
-  .get(workspaceController.getAllWorkspaces);
+  .post(createWorkspace)
+  .get(getAllWorkspaces);
 
 router
   .route("/:id")
-  .get(workspaceController.getWorkspaceById)
-  .put(workspaceController.updateWorkspace)
-  .delete(workspaceController.deleteWorkspace);
+  .get(getWorkspaceById)
+  .put(updateWorkspace)
+  .delete(deleteWorkspace);
 
 router
   .route("/industryType/:industryTypeId")
-  .get(workspaceController.getWorkspaceByIndustryType);
+  .get(getWorkspaceByIndustryType);
 
 router
   .route("/subscription/:subscription")
-  .get(workspaceController.getWorkspaceBySubscription);
+  .get(getWorkspaceBySubscription);
 
-module.exports = router;
+export default router;

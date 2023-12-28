@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import { Schema as _Schema, model } from "mongoose";
+const Schema = _Schema;
 
 const funnelStatusSchema = Schema(
   {
@@ -27,4 +27,4 @@ const funnelStatusSchema = Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("FunnelStatus", funnelStatusSchema);
+export default model("FunnelStatus", funnelStatusSchema);

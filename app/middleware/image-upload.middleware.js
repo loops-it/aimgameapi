@@ -1,6 +1,6 @@
-const multer = require("multer");
+import multer, { diskStorage } from "multer";
 
-const storage = multer.diskStorage({
+const storage = diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./uploads");
   },
@@ -14,4 +14,4 @@ const upload = multer({ storage: storage });
 // Define the middleware function for file upload
 const uploadProfilePhoto = upload.single("photo");
 
-module.exports = { uploadProfilePhoto };
+export default { uploadProfilePhoto };

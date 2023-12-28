@@ -1,4 +1,4 @@
-module.exports = class validationException extends Error {
+export default class validationException extends Error {
   constructor(message) {
     super(message);
     Error.captureStackTrace(this, this.constructor);

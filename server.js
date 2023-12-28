@@ -1,7 +1,7 @@
 require("dotenv").config();
-const { port } = require('./config')
-const app = require("./app");
+import { port } from './config';
+import { listen } from "./app";
 
-app.listen(port, () => {
+listen(port, () => {
     console.log(`Server listen on ${port}`);
 });

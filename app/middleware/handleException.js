@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
-const { MongoError } = require("mongodb");
+import { Error } from "mongoose";
+import { MongoError } from "mongodb";
 
-module.exports = (e, req, res, next) => {
+export default (e, req, res, next) => {
   //Transform mongoose validation errors
   console.log("first", e);
-  if (e instanceof mongoose.Error.ValidationError) {
+  if (e instanceof Error.ValidationError) {
     e = transformMonooseValidationError(e);
   }
   if (e instanceof MongoError) {
@@ -45,7 +45,7 @@ function transformMonooseValidationError(e) {
   const newList = {};
   const keys = Object.keys(e.errors);
   keys.forEach((k) => {
-    if (e.errors[k] instanceof mongoose.Error.CastError) {
+    if (e.errors[k] instanceof Error.CastError) {
       const kind = e.errors[k].kind;
       newList[k] = `${k} must be a ${kind}`;
     } else {

@@ -1,62 +1,62 @@
-const Joi = require("joi");
-const industryTypeService = require("../services/IndustryTypeService");
+import { string, boolean } from "joi";
+import { getAllIndustryTypes, getIndustryTypeById, createIndustryType, updateIndustryType, deleteIndustryType } from "../services/IndustryTypeService";
 
-exports.getAllIndustryTypes = async (req, res, next) => {
+export async function getAllIndustryTypes(req, res, next) {
   try {
-    const data = await industryTypeService.getAllIndustryTypes();
+    const data = await getAllIndustryTypes();
     res.status(201).json({ success: true, status: 200, data });
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.getIndustryTypeById = async (req, res, next) => {
+export async function getIndustryTypeById(req, res, next) {
   const { id } = req.params;
   try {
-    const data = await industryTypeService.getIndustryTypeById(id);
+    const data = await getIndustryTypeById(id);
     res.status(201).json({ success: true, status: 200, data });
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.createIndustryType = async (req, res, next) => {
+export async function createIndustryType(req, res, next) {
   const { body } = req;
   const industryTypeValidationRules = {
-    name: Joi.string().required(),
-    isActive: Joi.boolean().required(),
+    name: string().required(),
+    isActive: boolean().required(),
   };
   try {
     await validate(industryTypeValidationRules, req);
-    const data = await industryTypeService.createIndustryType(body);
+    const data = await createIndustryType(body);
     res.status(201).json({ success: true, status: 201, data });
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.updateIndustryType = async (req, res, next) => {
+export async function updateIndustryType(req, res, next) {
   const { id } = req.params;
   const { body } = req;
   const industryTypeValidationRules = {
-    name: Joi.string(),
-    isActive: Joi.boolean(),
+    name: string(),
+    isActive: boolean(),
   };
   try {
     await validate(industryTypeValidationRules, req);
-    const data = await industryTypeService.updateIndustryType(id, body);
+    const data = await updateIndustryType(id, body);
     res.status(201).json({ success: true, status: 201, data });
   } catch (error) {
     next(error);
   }
-};
+}
 
-exports.deleteIndustryType = async (req, res, next) => {
+export async function deleteIndustryType(req, res, next) {
   const { id } = req.params;
   try {
-    const data = await industryTypeService.deleteIndustryType(id);
+    const data = await deleteIndustryType(id);
     res.status(201).json({ success: true, status: 201, data });
   } catch (error) {
     next(error);
   }
-};
+}
